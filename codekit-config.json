@@ -307,15 +307,6 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/vendor\/Slim\/Middleware\/PrettyExceptions.php" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/vendor\/Slim\/Middleware\/PrettyExceptions.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
-    },
     "\/scripts\/main-ck.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 1,
@@ -326,6 +317,15 @@
       "syntaxCheckerStyle" : 1,
       "outputAbbreviatedPath" : "\/scripts\/main-ck-ck.js",
       "fileType" : 64
+    },
+    "\/vendor\/Slim\/Middleware\/PrettyExceptions.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/vendor\/Slim\/Middleware\/PrettyExceptions.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
     },
     "\/sass\/_compass_twitter_bootstrap_awesome.scss" : {
       "ignoreWasSetByUser" : 0,
@@ -368,18 +368,6 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/sass\/compass_twitter_bootstrap\/_navs.scss" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/sass\/compass_twitter_bootstrap\/_navs.scss",
-      "outputStyle" : 0,
-      "shouldRunBless" : 0,
-      "outputAbbreviatedPath" : "\/styles\/_navs.css",
-      "fileType" : 4,
-      "debugStyle" : 0
-    },
     "\/sass\/compass_twitter_bootstrap\/_forms.scss" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 1,
@@ -389,6 +377,18 @@
       "outputStyle" : 0,
       "shouldRunBless" : 0,
       "outputAbbreviatedPath" : "\/styles\/_forms.css",
+      "fileType" : 4,
+      "debugStyle" : 0
+    },
+    "\/sass\/compass_twitter_bootstrap\/_navs.scss" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/sass\/compass_twitter_bootstrap\/_navs.scss",
+      "outputStyle" : 0,
+      "shouldRunBless" : 0,
+      "outputAbbreviatedPath" : "\/styles\/_navs.css",
       "fileType" : 4,
       "debugStyle" : 0
     },
@@ -443,18 +443,6 @@
       "outputAbbreviatedPath" : "\/components\/angular\/angular-ck.js",
       "fileType" : 64
     },
-    "\/sass\/compass_twitter_bootstrap\/_buttons.scss" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/sass\/compass_twitter_bootstrap\/_buttons.scss",
-      "outputStyle" : 0,
-      "shouldRunBless" : 0,
-      "outputAbbreviatedPath" : "\/styles\/_buttons.css",
-      "fileType" : 4,
-      "debugStyle" : 0
-    },
     "\/images\/glyphicons-halflings-white.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -475,6 +463,18 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
+    "\/sass\/compass_twitter_bootstrap\/_buttons.scss" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/sass\/compass_twitter_bootstrap\/_buttons.scss",
+      "outputStyle" : 0,
+      "shouldRunBless" : 0,
+      "outputAbbreviatedPath" : "\/styles\/_buttons.css",
+      "fileType" : 4,
+      "debugStyle" : 0
+    },
     "\/scripts\/vendor\/bootstrap\/bootstrap-affix.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -486,14 +486,16 @@
       "outputAbbreviatedPath" : "\/scripts\/vendor\/bootstrap\/bootstrap-affix-ck.js",
       "fileType" : 64
     },
-    "\/vendor\/Slim\/Middleware.php" : {
+    "\/scripts\/modules\/users-ck.js" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/vendor\/Slim\/Middleware.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
+      "inputAbbreviatedPath" : "\/scripts\/modules\/users-ck.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/scripts\/modules\/users-ck-ck.js",
+      "fileType" : 64
     },
     "\/templates\/signin.php" : {
       "ignoreWasSetByUser" : 0,
@@ -501,6 +503,15 @@
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/templates\/signin.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
+    },
+    "\/vendor\/Slim\/Middleware.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/vendor\/Slim\/Middleware.php",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
@@ -515,17 +526,6 @@
       "outputAbbreviatedPath" : "\/styles\/_font-awesome.css",
       "fileType" : 2,
       "debugStyle" : 0
-    },
-    "\/scripts\/modules\/users-ck.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/scripts\/modules\/users-ck.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/scripts\/modules\/users-ck-ck.js",
-      "fileType" : 64
     },
     "\/images\/default-avatar.png" : {
       "ignoreWasSetByUser" : 0,
@@ -570,14 +570,16 @@
       "outputAbbreviatedPath" : "\/scripts\/vendor\/bootstrap\/bootstrap-modal-ck.js",
       "fileType" : 64
     },
-    "\/templates\/users\/index.html" : {
+    "\/test\/lib\/mocha\/mocha.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/templates\/users\/index.html",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
+      "inputAbbreviatedPath" : "\/test\/lib\/mocha\/mocha.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/test\/lib\/mocha\/mocha-ck.js",
+      "fileType" : 64
     },
     "\/sass\/compass_twitter_bootstrap\/_scaffolding.scss" : {
       "ignoreWasSetByUser" : 0,
@@ -602,16 +604,14 @@
       "outputAbbreviatedPath" : "\/scripts\/vendor\/bootstrap\/bootstrap-dropdown-ck.js",
       "fileType" : 64
     },
-    "\/test\/lib\/mocha\/mocha.js" : {
+    "\/templates\/events\/sidebar.html" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/test\/lib\/mocha\/mocha.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/test\/lib\/mocha\/mocha-ck.js",
-      "fileType" : 64
+      "inputAbbreviatedPath" : "\/templates\/events\/sidebar.html",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
     },
     "\/sass\/compass_twitter_bootstrap\/_labels-badges.scss" : {
       "ignoreWasSetByUser" : 0,
@@ -625,12 +625,12 @@
       "fileType" : 4,
       "debugStyle" : 0
     },
-    "\/templates\/events\/sidebar.html" : {
+    "\/templates\/users\/index.html" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/templates\/events\/sidebar.html",
+      "inputAbbreviatedPath" : "\/templates\/users\/index.html",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },

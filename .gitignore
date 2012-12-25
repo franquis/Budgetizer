@@ -1,0 +1,7 @@
+codekit-config.json
+.editorconfig
+.jshintrc
+.DS_Store
+temp
+dist
+.sass-cache/*

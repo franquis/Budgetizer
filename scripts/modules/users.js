@@ -57,6 +57,20 @@ usersModule.controller("userDetailCtrl",function($scope, $location, $routeParams
 
 	$scope.user = Users.get({id:$routeParams.id});
 	$scope.currentId = $routeParams.id;
+	
+	$scope.userDelete = $scope.$parent.userDelete();
+	
+
+	/*$scope.userDelete = function(user){
+		if(confirm("Delete '"+user.firstname+"'?")){
+			var u = $scope.$parent.getUser(user._id);
+			var index = jQuery.inArray(u,$scope.users);
+			$scope.users.splice(index,1);
+			//Users.delete({id:user._id});
+			console.log("User delete: ", user._id);
+		}
+	};*/
+
 	// $scope.user = $scope.getUser($routeParams.id,function(user){
 	// 	if(user){
 	// 		$scope.user = angular.copy(user);
