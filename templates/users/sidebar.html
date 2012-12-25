@@ -1,0 +1,13 @@
+<ul class="nav nav-list">
+	<li class="nav-header">Users list</li>
+	<li ng-repeat="user in users | filter:fullname" ng-class="{true:'active',false:''}[currentId==user._id]">
+		<a href="#/users/detail/{{user._id}}" >
+			<small><i class="icon-user"></i> {{user.fullname | trim:40}}</small>
+		</a>
+	</li>
+	
+</ul>
+<ul class="nav nav-list" id="viewsChoser">
+	<li class="nav-header">Quick Actions</li>
+	<li><a class="" href="#/users/add"><i class="icon-plus"></i> Add User</a></li>
+</ul>

@@ -1,0 +1,1 @@
+var Budgetizer=angular.module("Budgetizer",[]);Budgetizer.controller("MainCtrl",function(){$scope.currentUser={firstname:"François",lastname:"Perret du Cray"}});

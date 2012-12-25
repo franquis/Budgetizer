@@ -1,0 +1,58 @@
+<div class="row-fluid" id="detailView">
+
+	<nav class="span2" id="sidebar" ng-include src="'templates/users/sidebar.html?gh'"></nav>
+	<section class="span10">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<a class="brand" href="#/users/">Users</a>
+
+				
+				<ul class="nav pull-left">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						Actions <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a role="button">
+									<i class="icon-edit"></i> Edit
+								</a>
+							</li>
+							<li>
+								<a role="button" ng-click="userDelete(user)">
+									<i class="icon-remove"></i> Delete
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li><a href="#/users">Clear filters</a></li>
+						</ul>
+                    </li>
+				</ul>
+			    <ul class="nav pull-right">
+					<li class="divider-vertical"></li>
+					<li ng-class="{true:'active', false:''}[view=='block']"><a href="#/users" ng-click="view='block'"><i class="icon-th"></i></a></li>
+					<li ng-class="{true:'active', false:''}[view=='list']"><a href="#/users" ng-click="view='list'"><i class="icon-list"></i></a></li>
+			    </ul>
+			</div>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><a href="#/users">Users</a> <span class="divider">/</span></li>
+			<li class="active"><b>{{user.fullname}}</b></li>
+		</ul>
+		<div class="row-fluid" id="userDetails">
+			<div class="thumbnail span3">
+				<div class="box">
+					<h5>{{user.firstname}} participated to:</h5>
+					
+					<ul>
+						<li>Beau-Peaux</li>
+						<li>Nouvel An 2013</li>
+					</ul>
+				</div>
+			</div>
+			
+
+		</div>
+	</section>
+</div>

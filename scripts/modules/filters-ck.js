@@ -1,0 +1,1 @@
+var Filters=angular.module("Filters",[]);Filters.filter("trim",function(){var e=50;return function(e,t,n){if(!n)var n=" ...";return e&&e.length>t?e.slice(0,t)+n:e}});

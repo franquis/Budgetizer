@@ -1,0 +1,27 @@
+<div class="row-fluid" id="addView">
+
+	<nav class="span2" id="sidebar" ng-include src="'templates/users/sidebar.html?b'"></nav>
+	<section class="span10">
+		<form name="form">
+			<fieldset>
+			    <legend>New user</legend>
+
+				<label>Firstname *</label>
+				<input type="text" required ng-model="newUser.firstname"/>
+				<span class="error" ng-show="form.input.$error.required">
+        		Required!</span>
+				<label>Lastname *</label>
+				<input type="text" required ng-model="newUser.lastname"/>
+				<label>Email *</label>
+				<input type="email" ng-model="newUser.email" required/>
+			</fieldset>
+
+			<div class="control-group">
+				<button type="submit" class="btn btn-success" ng-click="addUser()" ng-disabled="form.$invalid">Save</button>
+				<a href="#/users" role="button" class="btn btn-warning">Cancel</a>
+			</div>
+			<div class="alert alert-info">
+				* indicates a <strong>required</strong> field</div>
+		</form>
+	</section>
+</div>

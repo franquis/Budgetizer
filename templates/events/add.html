@@ -1,0 +1,30 @@
+<div class="row-fluid" id="dashboard">
+
+	<nav class="span2" id="sidebar" ng-include src="'templates/events/sidebar.html'"></nav>
+	<section class="span10">
+		<form name="form">
+			<fieldset>
+			    <legend>New Event</legend>
+
+				<label>Name *</label>
+				<input type="text" required ng-model="newEvent.name"/>
+				<span class="error" ng-show="form.input.$error.required">
+        		Required!</span>
+				<label>Description *</label>
+				<input type="text" required ng-model="newEvent.description"/>
+				<label>Start</label>
+				<input type="date" ng-model="newEvent.date.start"/>
+				<label>End</label>
+				<input type="date" ng-model="newEvent.date.end"/>
+			</fieldset>
+
+			<div class="control-group">
+				<button type="submit" class="btn btn-success" ng-click="addEvent()" ng-disabled="form.$invalid">Save</button>
+				<a href="#/events" role="button" class="btn btn-warning">Cancel</a>
+			</div>
+			<div class="alert alert-info">
+				* indicates a <strong>required</strong> field</div>
+		</form>
+		<code>{{newEvent | json}}</code>
+	</section>
+</div>
