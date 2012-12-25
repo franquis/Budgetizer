@@ -1,1 +1,17 @@
 <h1>Edit</h1>
+
+<form name="userForm" ng-init="nuser = user">
+
+	<label>Firstname</label>
+	<input type="text" ng-model="nuser.firstname" value="{{nuser.firstname}}" required/>
+	<label>Lastname</label>
+	<input type="text" ng-model="nuser.lastname" value="{{nuser.lastname}}" required/>
+	<label>Email</label>
+	<input type="email" ng-model="nuser.email" value="{{nuser.email}}"/>
+	<div class="control-group">
+		<button type="submit" ng-click="editUser()" value="submit" class="btn btn-success" ng-disabled="userForm.$invalid">
+			<i class="icon-save"></i> Save
+		</button>
+		<a href="#/users" class="btn btn-warning">Cancel</a>
+	</div>
+</form>

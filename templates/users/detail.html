@@ -1,7 +1,7 @@
 <div class="row-fluid" id="detailView">
 
 	<nav class="span2" id="sidebar" ng-include src="'templates/users/sidebar.html?gh'"></nav>
-	<section class="span10">
+	<section class="span10" ng-controller="userCtrl">
 		<div class="navbar">
 			<div class="navbar-inner">
 				<a class="brand" href="#/users/">Users</a>
@@ -14,12 +14,12 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a role="button">
+								<a role="button" href="#/users/edit/{{user._id}}">
 									<i class="icon-edit"></i> Edit
 								</a>
 							</li>
 							<li>
-								<a role="button" ng-click="userDelete(user)">
+								<a role="button" ng-click="deleteUser(user)">
 									<i class="icon-remove"></i> Delete
 								</a>
 							</li>

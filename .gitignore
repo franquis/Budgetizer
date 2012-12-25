@@ -5,3 +5,4 @@ codekit-config.json
 temp
 dist
 .sass-cache/*
+*/*-ck.js
