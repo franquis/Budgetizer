@@ -7,3 +7,5 @@ dist
 .sass-cache/*
 */*-ck.js
 _misc/
+
+codekit-config.json
