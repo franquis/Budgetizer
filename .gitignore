@@ -1,4 +1,3 @@
-codekit-config.json
 .editorconfig
 .jshintrc
 .DS_Store
@@ -6,6 +5,5 @@ temp
 dist
 .sass-cache/*
 */*-ck.js
-_misc/
-
+_misc/*
 codekit-config.json

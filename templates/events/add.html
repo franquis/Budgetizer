@@ -16,6 +16,10 @@
 				<input type="date" ng-model="newEvent.date.start"/>
 				<label>End</label>
 				<input type="date" ng-model="newEvent.date.end"/>
+				<label>Contributors: </label>
+				<select ng-model="newEvent.contributors" multiple>
+					<option ng-repeat="user in users" value="{{user._id}}">{{user.fullname}}</option>
+				</select>
 			</fieldset>
 
 			<div class="control-group">

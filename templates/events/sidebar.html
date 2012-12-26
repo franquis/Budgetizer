@@ -1,13 +1,13 @@
 <ul class="nav nav-list">
-	<li class="nav-header">Actions</li>
-	<li><a class="" href="#/events/add"><i class="icon-plus"></i> Add Event</a></li>
+	<li class="nav-header">Events list</li>
+	<li ng-repeat="event in events"><a class="" href="#/events/detail/{{event._id}}"><i class="icon-time"></i> {{event.name}}</a></li>
 	<li></li>
 </ul>
 <ul class="nav nav-list" id="viewsChoser">
 	<li class="nav-header">Quick Actions</li>
 	<li>
-		<a href="#">
-			<i class="icon-plus"></i> Add Event
+		<a href="#/events/add">
+			<i class="icon-plus-sign"></i> Add Event
 		</a>
 	</li>
 </ul>

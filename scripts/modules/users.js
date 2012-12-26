@@ -16,14 +16,15 @@ usersModule.factory('Users', function($resource){
 });
 
 
-usersModule.controller("usersCtrl",function($scope, Users){
+usersModule.controller("usersCtrl",function($scope, $location, Users){
 	$scope.filters = {
 		"query":"",
 		'orderBy':"firstname",
 		'order':false
 
 	};
-	$scope.view = "block";
+	var url_params = $location.search();
+	$scope.view = (url_params.view) ? url_params.view : "block";
 
 	/*$scope.userDelete = function(user){
 		if(confirm("Delete '"+user.firstname+"' ?")){
@@ -75,6 +76,7 @@ usersModule.controller("userCtrl",function($scope, $location, $routeParams, User
 
 	$scope.editUser = function(){
 		console.log($scope.user);
+		//@todo remove user.fullname;
 
 	};
 });

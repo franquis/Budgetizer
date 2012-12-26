@@ -21,13 +21,14 @@ class JSONMiddleware extends \Slim\Middleware{
         //The Request object
         $req = $app->request();
         
-
         //The Response object
         $res = $app->response();
         
 
-        if($req->getContentType() == "application/json"){
+        if($req->isAjax()){
         	$res['Content-Type'] = "application/json";
+        } else {
+            $res['Content-Type'] = "text/html";
         }
 
         $this->next->call();

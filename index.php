@@ -12,19 +12,25 @@ require 'vendor/Slim/Slim.php';
 require 'vendor/middlewares.php';
 require 'vendor/config.php';
 
-// set a new connector to the CouchDB server
-$db = new couchClient(COUCHDB_URL,COUCHDB_DB);
-
 \Slim\Slim::registerAutoloader();
 
-$app = new \Slim\Slim(array(
-	'templates.path' => './templates',
-	'debug' => true
-));
+$app = new \Slim\Slim($SLIM_CONFIG);
+
+// set a new connector to the CouchDB server
+try {
+	$db = new couchClient(COUCHDB_URL,COUCHDB_DB);
+} catch (Exception $e) {
+   $app->flashNow('error',"Connexion to CouchDB failed!<br/><code>{$e->getMessage()}</code>");
+}
 
 /* Default settings */
 $app->error(function (\Exception $e) use ($app) {
-    $app->render('error.php');
+	$req = $app->request();
+	if($app->request()->isAjax()) {
+		echo $e->getMessage();		
+    } else {
+		$app->render('error.php',array("error"=>$e->getMessage()));
+    }
 });
 $app->notFound(function () use ($app) {
     $app->render('404.html');
@@ -37,13 +43,11 @@ $app->add(new \JSONMiddleware());
 /* Routes */
 $app->get('/', function() use ($app){
 	$res = $app->response();
-	$res['Content-Type'] = "text/html";
 	$app->render('main.html');
 });
+
 $app->get('/login',function() use($app){
-
 	$app->render('signin.php');
-
 });
 /*
 @todo authentification middleware...
@@ -53,23 +57,28 @@ $app->get('/login',function() use($app){
 /* USERS */
 $app->get('/api/users', function () use($app, $db) {
 	
-
-	$view = $db->getView('users','list');
-
-	$data = array();
-	foreach($view->rows as $u){
-		$z = $u->value;
-		$z->fullname = "{$z->firstname} {$z->lastname}";
-
-		// Temp
-
-		$z->incomes = rand(0,1000);
-		$z->outcomes = rand(-200,0);
-		
-		$data[] = $z;
-	}
+	try{
+		$view = $db->getView('users','list');
 	
-	echo json_encode($data);
+		$data = array();
+		foreach($view->rows as $u){
+			$z = $u->value;
+			$z->fullname = "{$z->firstname} {$z->lastname}";
+
+			// Temp
+
+			$z->incomes = rand(0,1000);
+			$z->outcomes = rand(-200,0);
+			
+			$data[] = $z;
+		}
+		
+		echo json_encode($data);
+
+	} catch(Exception $e){
+		$app->error($e);
+		echo json_encode($e->getMessage());
+	}
 });
 
 $app->delete('/api/users/:id', function ($id) use($app,$db) {
@@ -98,8 +107,35 @@ $app->delete('/api/users/:id', function ($id) use($app,$db) {
 
 
 });
+// POST route (update)
+$app->post("/api/users/:id",function($id) use($app,$db){
+	try {
+	    $user = $db->getDoc($id);
+	} catch (Exception $e) {
+	    echo json_encode(array(
+				"status"=>"500",
+				"message"=>$e->getMessage(),
+				"errorCode"=>$e->getCode()
+			)
+		);
+	}
+	try {
+		$user_data = json_decode($app->request()->getBody());
+		$db->updateDoc();
+	
+	} catch (Exception $e) {
+	    echo json_encode(array(
+				"status"=>"500",
+				"message"=>$e->getMessage(),
+				"errorCode"=>$e->getCode()
+			)
+		);
+	}
 
-// POST route
+
+});
+
+// POST route (creation)
 $app->post('/api/users', function () use($app,$db) {
     $user_data = json_decode($app->request()->getBody());
     $user = new couchDocument($db);
@@ -131,8 +167,13 @@ $app->get('/api/users/:id', function ($id) use($app, $db) {
 	echo json_encode($doc);
 });
 
-$app->get('/api/tasks', function () use($app, $db) {
-	$view = $db->revs()->getView('tasks','list');
+
+
+
+/** EVENTS **/
+
+$app->get('/api/events', function () use($app, $db) {
+	$view = $db->revs()->getView('events','list');
 	
 	$data = array();
 	foreach($view->rows as $u){
@@ -141,6 +182,40 @@ $app->get('/api/tasks', function () use($app, $db) {
 	
 	echo json_encode($data);
 });
+
+$app->get('/api/events/:id', function ($id) use($app, $db) {
+	$req = $app->request();
+	$rev = $req->get('rev');
+	
+	if(isset($rev) && $rev != "undefined" ){
+		try {
+			$doc = $db->revs()->rev($rev)->getDoc($id);
+		} catch ( Exception $e ) {
+			if ( $e->getCode() == 404 ) {
+			   $doc = array('status'=>404,'message'=>"Document '{$id}' or revision {$rev} does not exist !");
+			}
+		}
+	} else {
+		$doc = $db->revs()->getDoc($id);
+	}
+	
+	echo json_encode($doc);
+});
+
+$app->post('/api/events', function () use($app,$db) {
+    $_event = json_decode($app->request()->getBody());
+    $event = new couchDocument($db);
+    $event->set($_event);
+
+    echo json_encode($event->getFields());
+});
+
+
+
+
+
+
+
 
 $app->get('/api/tags', function () use($app, $db) {
 	$view = $db->getView('tags','list');

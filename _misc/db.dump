@@ -1,0 +1,107 @@
+Content-Type: multipart/mixed; boundary="==e9b971cc8df7449b9324dbafb49b718d=="
+
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d961200088f
+Content-Length: 153
+Content-MD5: +UJoxKGLaKUAJ6xXTQox4A==
+Content-Type: application/json;charset=utf-8
+ETag: "2-971cb48cf8b209cb1f97868ffa2be554"
+
+{"lastname": "Lamour", "_rev": "2-971cb48cf8b209cb1f97868ffa2be554", "_id": "5dff9eebfedec51410b07d961200088f", "type": "user", "firstname": "François"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d9612001057
+Content-Length: 150
+Content-MD5: e9Eisu+to/eV5CcSjD92Rw==
+Content-Type: application/json;charset=utf-8
+ETag: "1-a913641828a301951ccb439c71de1a1f"
+
+{"lastname": "George", "_rev": "1-a913641828a301951ccb439c71de1a1f", "_id": "5dff9eebfedec51410b07d9612001057", "type": "user", "firstname": "Romain"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d9612001f11
+Content-Length: 186
+Content-MD5: 0mS6Dll2xgK++O0om1Br9A==
+Content-Type: application/json;charset=utf-8
+ETag: "2-c6f57173b5dd9c91b42d7202228fbce9"
+
+{"firstname": "Jérome", "lastname": "Vidich", "_rev": "2-c6f57173b5dd9c91b42d7202228fbce9", "_id": "5dff9eebfedec51410b07d9612001f11", "type": "user", "email": "jeromevidich@gmail.com"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d96120025ec
+Content-Length: 188
+Content-MD5: z8u0Q1XtnEesN+wigow2xg==
+Content-Type: application/json;charset=utf-8
+ETag: "2-91d34769386ad95db38c31770f39f46d"
+
+{"firstname": "Guillaume", "lastname": "Baroin", "_rev": "2-91d34769386ad95db38c31770f39f46d", "_id": "5dff9eebfedec51410b07d96120025ec", "type": "user", "email": "ghuaultdupuy@gmail.com"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d96120031e1
+Content-Length: 184
+Content-MD5: IXqkCt9J56KUDUSf07hK6Q==
+Content-Type: application/json;charset=utf-8
+ETag: "2-4bfeda86c4ed7eccd3be061d682f6fa1"
+
+{"firstname": "Marie", "lastname": "Danton", "_rev": "2-4bfeda86c4ed7eccd3be061d682f6fa1", "_id": "5dff9eebfedec51410b07d96120031e1", "type": "user", "email": "marie.danton@gmail.com"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d9612003816
+Content-Length: 183
+Content-MD5: C8MPfqUQoI1EOcfMlAAzQQ==
+Content-Type: application/json;charset=utf-8
+ETag: "2-b19685cf40b930f55c00ae2f821a390f"
+
+{"firstname": "Sylvie", "lastname": "Morel", "_rev": "2-b19685cf40b930f55c00ae2f821a390f", "_id": "5dff9eebfedec51410b07d9612003816", "type": "user", "email": "sylvie.morelgmail.com"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d961200454f
+Content-Length: 186
+Content-MD5: rtky4HhnsNiaRLA1RJgY1w==
+Content-Type: application/json;charset=utf-8
+ETag: "2-58cef44fc1948ffb4e4766a709636811"
+
+{"firstname": "Charlotte", "lastname": "Brunet", "_rev": "2-58cef44fc1948ffb4e4766a709636811", "_id": "5dff9eebfedec51410b07d961200454f", "type": "user", "email": "chbrunet@hotmail.com"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d9612005326
+Content-Length: 183
+Content-MD5: 5Nj4JVQibd2iifA6YYjCvA==
+Content-Type: application/json;charset=utf-8
+ETag: "2-34dd9c20dd21cf1fc0958ef6eaba7f87"
+
+{"firstname": "Anne-Sophie", "lastname": "Biel", "_rev": "2-34dd9c20dd21cf1fc0958ef6eaba7f87", "_id": "5dff9eebfedec51410b07d9612005326", "type": "user", "email": "as.biel@gmail.com"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 5dff9eebfedec51410b07d9612005aa8
+Content-Length: 175
+Content-MD5: aqbWGhlbrctTMCxOCoyNuw==
+Content-Type: application/json;charset=utf-8
+ETag: "1-9765cf2b9768ba103307b96f0dd8e062"
+
+{"firstname": "coucou", "lastname": "caca", "_rev": "1-9765cf2b9768ba103307b96f0dd8e062", "_id": "5dff9eebfedec51410b07d9612005aa8", "type": "user", "email": "coucou@caca.fr"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 76026ca0ed8e4b662bc75c902a00ee87
+Content-Length: 227
+Content-MD5: YJfuq78+YIndlSv3ch/ogw==
+Content-Type: application/json;charset=utf-8
+ETag: "2-ba02eb7c8c97486c04efbecd9ecf49de"
+
+{"name": "Nouvel An 2013", "date": {"start": "2012-12-31", "end": "2013-01-01"}, "_rev": "2-ba02eb7c8c97486c04efbecd9ecf49de", "_id": "76026ca0ed8e4b662bc75c902a00ee87", "type": "event", "description": "Soirée chez Guillaume"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: 76026ca0ed8e4b662bc75c902a00f67b
+Content-Length: 226
+Content-MD5: KiQYWY+PMV+/VxD6cGW0Rw==
+Content-Type: application/json;charset=utf-8
+ETag: "2-142fe06790da546206c1b9ec20b04bd1"
+
+{"name": "Colocation Paris", "date": {"start": "2012-12-01", "end": "2014-12-31"}, "_rev": "2-142fe06790da546206c1b9ec20b04bd1", "_id": "76026ca0ed8e4b662bc75c902a00f67b", "type": "event", "description": "Colocation à Paris"}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: _design/events
+Content-Length: 205
+Content-MD5: iTUNv44TrSgUZV+Ho55KJw==
+Content-Type: application/json;charset=utf-8
+ETag: "1-930f16ac0dd4a23e200947fda33aff37"
+
+{"_rev": "1-930f16ac0dd4a23e200947fda33aff37", "_id": "_design/events", "language": "javascript", "views": {"list": {"map": "function(doc) {\n  if(doc.type == \"event\"){\n\temit(doc._id, doc);\n  }\n}"}}}
+--==e9b971cc8df7449b9324dbafb49b718d==
+Content-ID: _design/users
+Content-Length: 1550
+Content-MD5: uYTQFr3bG0k0W8MNpWwRHA==
+Content-Type: application/json;charset=utf-8
+ETag: "2-2804fc45a01a942c22a7d72d47929925"
+
+{"_rev": "2-2804fc45a01a942c22a7d72d47929925", "_id": "_design/users", "update": {"xml": "function(doc, req) {       var xml = new XML('<xml></xml>');       xml.title = doc.title;       var posted_xml = new XML(req.body);       doc.via_xml = posted_xml.foo.toString();       var resp =  {         'headers' : {           'Content-Type' : 'application/xml'         },         'body' : xml       };         return [doc, resp];      }", "bump-counter": "function(doc, req) {       if (!doc.counter) doc.counter = 0;       doc.counter += 1;       var message = '<h1>bumped it!</h1>';       return [doc, message];     }", "in-place-query": "function(doc, req) {       var field = req.query.field;       var value = req.query.value;       var message = 'set '+field+' to '+value;       doc[field] = value;       return [doc, message];     }", "error": "function(doc, req) {       superFail.badCrash;     }", "in-place": "function(doc, req) {       var field = req.form.field;       var value = req.form.value;       var message = 'set '+field+' to '+value;       doc[field] = value;       return [doc, message];     }", "hello": "function(doc, req) {       if (!doc) {         if (req.id) {           return [{             _id : req.id           }, 'New World']         }         return [null, 'Empty World'];       }       doc.world = 'hello';       doc.edited_by = req.userCtx;       return [doc, 'hello doc'];     }"}, "language": "javascript", "views": {"list": {"map": "function(doc) {\n  if(doc.type == \"user\"){\n\t  emit(doc._id, doc);\n  }\n}"}}}
+--==e9b971cc8df7449b9324dbafb49b718d==--

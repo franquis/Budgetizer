@@ -1,17 +1,28 @@
-<h1>Edit</h1>
+<div class="row-fluid" id="detailView">
 
-<form name="userForm" ng-init="nuser = user">
-
-	<label>Firstname</label>
-	<input type="text" ng-model="nuser.firstname" value="{{nuser.firstname}}" required/>
-	<label>Lastname</label>
-	<input type="text" ng-model="nuser.lastname" value="{{nuser.lastname}}" required/>
-	<label>Email</label>
-	<input type="email" ng-model="nuser.email" value="{{nuser.email}}"/>
-	<div class="control-group">
-		<button type="submit" ng-click="editUser()" value="submit" class="btn btn-success" ng-disabled="userForm.$invalid">
-			<i class="icon-save"></i> Save
-		</button>
-		<a href="#/users" class="btn btn-warning">Cancel</a>
-	</div>
-</form>
+	<nav class="span2" id="sidebar" ng-include src="'templates/users/sidebar.html?gh'"></nav>
+	<section class="span10">
+		<h1>Edit User</h1>
+		<div class="row-fluid">
+			<form name="userForm" ng-init="nuser = user">
+				<div class="thumbnail span2">
+					<img src="images/default-avatar.png">
+				</div>
+				<div class="span10">
+					<label>Firstname: *</label>
+					<input type="text" ng-model="nuser.firstname" value="{{nuser.firstname}}" required/>
+					<label>Lastname: *</label>
+					<input type="text" ng-model="nuser.lastname" value="{{nuser.lastname}}" required/>
+					<label>Email:</label>
+					<input type="email" ng-model="nuser.email" value="{{nuser.email}}"/>
+					<div class="control-group">
+						<button type="submit" ng-click="editUser()" value="submit" class="btn btn-success" ng-disabled="userForm.$invalid">
+							<i class="icon-save"></i> Save
+						</button>
+						<a href="#/users" class="btn btn-warning">Cancel</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</div>

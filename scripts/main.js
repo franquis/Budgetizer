@@ -6,7 +6,12 @@ Budgetizer.config(['$routeProvider', function($routeProvider) {
 		otherwise({redirectTo: '/'});
 }]);
 
-Budgetizer.controller('MainCtrl',function($scope,$location, Users){
+Budgetizer.controller('MainCtrl',function($scope,$location, Users, Events){
+	
+	$scope.error = {
+		"status":200
+	};
+
 	$scope.currentUrl = function(){
 		return $location.path();
 	};
@@ -16,23 +21,21 @@ Budgetizer.controller('MainCtrl',function($scope,$location, Users){
 		"lastname":"Perret du Cray"
 	};
 
-	$scope.users = Users.query(function(){
+	$scope.users = Users.query(function(success){
 		$scope.buildUserIndex();
+	},function(error){
+		$scope.error = error;
 	});
 
 	$scope.usersIndex = [];
 
 	$scope.modules = [
 		{"title":"Dashboard","url":"/","icon":"icon-home"},
-		{"title":"Events","url":"events","icon":"icon-calendar"},
+		{"title":"Events","url":"events","icon":"icon-time"},
 		{"title":"Expenses","url":"expenses","icon":"icon-money"},
 		{"title":"Users","url":"users","icon":"icon-group"}
 	];
-	$scope.events = [
-		{"name":"Colloc"},
-		{"name":"Beau-Peux"},
-		{"name":"Nouvel An 2013"}
-	];
+	$scope.events = Events.query();
 
 
 
