@@ -11,15 +11,23 @@
 				<span class="error" ng-show="form.input.$error.required">
         		Required!</span>
 				<label>Description *</label>
-				<input type="text" required ng-model="newEvent.description"/>
+				<input type="text" ng-model="newEvent.description"/>
 				<label>Start</label>
-				<input type="date" ng-model="newEvent.date.start"/>
+				<input type="date" ng-model="newEvent.date.start" pikaday/>
 				<label>End</label>
-				<input type="date" ng-model="newEvent.date.end"/>
+				<input type="date" ng-model="newEvent.date.end" pikaday/>
 				<label>Contributors: </label>
-				<select ng-model="newEvent.contributors" multiple>
-					<option ng-repeat="user in users" value="{{user._id}}">{{user.fullname}}</option>
-				</select>
+
+				<div class="input-append">
+					<select ng-model="newEvent.participants" multiple required>
+						<option ng-repeat="user in users" value="{{user._id}}">{{user.fullname}}</option>
+					</select>
+					<a href="#CatModal" class="btn pop" data-toggle="modal" type="button"><i class="icon-plus"></i> </a>
+				</div>
+
+
+
+				
 			</fieldset>
 
 			<div class="control-group">

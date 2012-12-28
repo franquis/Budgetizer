@@ -3,7 +3,7 @@
 	<nav class="span2" id="sidebar" ng-include src="'templates/events/sidebar.html?b'"></nav>	
 	
 	<section  class="span10">
-		<div class="navbar">
+		<nav class="navbar">
 			<div class="navbar-inner">
 				<a class="brand" href="#/events">Events</a>
 
@@ -45,7 +45,7 @@
 					<li ng-class="{true:'active', false:''}[view=='list']"><a href="#/events?view=list" ng-click="view='list'"><i class="icon-list"></i></a></li>
 		        </ul>
 			</div>
-		</div>
+		</nav>
 		<div class="row-fluid" ng-show="filters.query">
 			<div class="span12">
 				<strong><i class="icon-caret-right"></i> Results for "{{filters.query}}"</strong>
@@ -65,8 +65,14 @@
 					<div class="box-meta">
 						<ul>
 							<li><i class="icon-calendar"></i>  <span class="label">{{event.date.start | date:"dd/MM/yyyy"}}</span> <i class="icon-arrow-right"></i>  <span class="label">{{event.date.end | date:"dd/MM/yyyy"}}</span></li>
-							<li><span class="badge badge-success">5</span> contributors</li>
+							<li><span class="badge badge-success">{{event.participants.length}}</span> participants</li>
+							<li><span class="badge badge-warning">{{event.expenses.length}}</span> expenses</li>
 						</ul>
+						<ng-pluralize count="event.participants"
+							when="{'0': 'Nobody is participating.',
+								'one': '1 person is participating.',
+								'other': '{} people are participating.'}">
+						</ng-pluralize>
 						<div class="box-balance">
 							<div class="span6">
 								<span class="label label-success"><i class="icon-arrow-up"></i>  {{'142'}}&euro;</span>
@@ -84,7 +90,7 @@
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li><a href="#/events/remove/{{event._id}}">Remove</a></li>
+								<li><a href="#/events/remove/{{event._id}}"><i class="icon-remove"></i> Remove</a></li>
 							</ul>
 						</div>
 					</div>
@@ -99,6 +105,7 @@
 						<th>Description</th>
 						<th>Starts on</th>
 						<th>Ends on</th>
+						<th>Participants</th>
 						<th>Actions</th>
 					</tr>	
 				</thead>
@@ -108,6 +115,13 @@
 						<td>{{event.description}}</td>
 						<td>{{event.date.start  | date:"dd/MM/yyyy"}}</td>
 						<td>{{event.date.end  | date:"dd/MM/yyyy"}}</td>
+						<td>
+							<ng-pluralize count="event.participants"
+							when="{'0': 'Nobody is participating.',
+								'one': '1 person is participating.',
+								'other': '{} people are participating.'}">
+							</ng-pluralize>
+						</td>
 						<td>
 							<div class="btn-group">
 								<a href="#/events/detail/{{event._id}}" class="btn btn-mini btn-warning" title="Edit"> <i class="icon-edit"></i></a>

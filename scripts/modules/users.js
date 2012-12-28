@@ -5,7 +5,7 @@ usersModule.config(['$routeProvider', function($routeProvider) {
 		when('/users', {templateUrl : 'templates/users/index.html', controller:'usersCtrl'}).
 		when('/users/add', {templateUrl : 'templates/users/add.html', controller:'userCtrl'}).
 		when('/users/detail/:id', {templateUrl : 'templates/users/detail.html', controller:'userDetailCtrl'}).
-		when('/users/edit/:id', {templateUrl : 'templates/users/edit.html', controller:'userCtrl'}).
+		when('/users/edit/:id', {templateUrl : 'templates/users/edit.html', controller:'userDetailCtrl'}).
 		otherwise({redirectTo: '/404'});
 }]);
 
@@ -26,36 +26,21 @@ usersModule.controller("usersCtrl",function($scope, $location, Users){
 	var url_params = $location.search();
 	$scope.view = (url_params.view) ? url_params.view : "block";
 
-	/*$scope.userDelete = function(user){
-		if(confirm("Delete '"+user.firstname+"' ?")){
-			var u = $scope.$parent.getUser(user._id);
-			var i = jQuery.inArray(u,$scope.users);
-			$scope.users.splice(i,1);
-			Users.delete({id:user._id});
-		}
-	};*/
+
 
 });
 
-usersModule.controller("userCtrl",function($scope, $location, $routeParams, Users){
+usersModule.controller("userCtrl",function($scope, $location, $log, $routeParams, Users, DataFactory){
 
-	$scope.newUser = {"type":"user"};
+	$scope.UserModel = {"type":"user"};
+
+	$scope.newUser = angular.copy($scope.UserModel);
 	
-	$scope.getCurrentUser = function(){
-		if(!angular.isObject($scope.user)){
-			if($routeParams.id){
-				$scope.user = Users.get({id:$routeParams.id});
-			}
-		}
-	};
-
-	$scope.getCurrentUser();	
-
 	$scope.addUser = function(){
 
 		Users.save($scope.newUser,function(user){
 			$scope.users.push(user);
-			$scope.newUser = angular.copy({});
+			$scope.newUser = angular.copy($scope.UserModel);
 		});
 
 		$location.path("/users");
@@ -67,24 +52,42 @@ usersModule.controller("userCtrl",function($scope, $location, $routeParams, User
 			var u = $scope.$parent.getUser(user._id);
 			var index = jQuery.inArray(u,$scope.users);
 			$scope.users.splice(index,1);
-			//Users.delete({id:user._id});
+			/**
+			 *	@todo: remove index from DataFactory (= refresh / rebuild)
+			 *	Users.delete({id:user._id});
+			**/
 			console.log("User delete: ", user._id);
-
 			$location.path("/users");
 		}
 	};
 
 	$scope.editUser = function(){
 		console.log($scope.user);
-		//@todo remove user.fullname;
+		//@todo remove user.fullname or move this behavior to PHP or CouchDB
 
+	};
+
+	$scope.isContributor = function(){
+		return false;
 	};
 });
 
-usersModule.controller("userDetailCtrl",function($scope, $location, $routeParams, Users){
+usersModule.controller("userDetailCtrl",function($scope, $location, $timeout, $routeParams, $log, Users, DataFactory){
 
-	$scope.user = Users.get({id:$routeParams.id});
-	$scope.currentId = $routeParams.id;
+	var _id = $scope.currentId = $routeParams.id;
 	
+	$scope.getUser = function(){
+		DataFactory.getUser(_id,function(user){
+			$log.info("User #"+_id+" found:",user);
+			$scope.user = user;
+		},function(){
+			$log.warn("User #"+_id+" not found, looping...");
+			$timeout(function(){$scope.getUser();},	1000);
+				
+		});
+	};
+
+	
+	$scope.getUser();
 });
 

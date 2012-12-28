@@ -10,6 +10,7 @@ require 'vendor/CouchDB/couchClient.php';
 require 'vendor/CouchDB/couchDocument.php';
 require 'vendor/Slim/Slim.php';
 require 'vendor/middlewares.php';
+require 'vendor/exceptions.php';
 require 'vendor/config.php';
 
 \Slim\Slim::registerAutoloader();
@@ -18,7 +19,7 @@ $app = new \Slim\Slim($SLIM_CONFIG);
 
 // set a new connector to the CouchDB server
 try {
-	$db = new couchClient(COUCHDB_URL,COUCHDB_DB);
+	$app->db = new couchClient(COUCHDB_URL,COUCHDB_DB);
 } catch (Exception $e) {
    $app->flashNow('error',"Connexion to CouchDB failed!<br/><code>{$e->getMessage()}</code>");
 }
@@ -55,22 +56,18 @@ $app->get('/login',function() use($app){
 
 
 /* USERS */
-$app->get('/api/users', function () use($app, $db) {
+$app->get('/api/users', function () use($app) {
 	
 	try{
-		$view = $db->getView('users','list');
+		$view = $app->db->getView('users','list');
 	
-		$data = array();
-		foreach($view->rows as $u){
-			$z = $u->value;
-			$z->fullname = "{$z->firstname} {$z->lastname}";
+		$data = getItems($view);
 
-			// Temp
+		foreach($data as &$z){
+			$z->fullname = "{$z->firstname} {$z->lastname}";
 
 			$z->incomes = rand(0,1000);
 			$z->outcomes = rand(-200,0);
-			
-			$data[] = $z;
 		}
 		
 		echo json_encode($data);
@@ -81,9 +78,9 @@ $app->get('/api/users', function () use($app, $db) {
 	}
 });
 
-$app->delete('/api/users/:id', function ($id) use($app,$db) {
+$app->delete('/api/users/:id', function ($id) use($app) {
 	try {
-		$doc = $db->getDoc($id);
+		$doc = $app->db->getDoc($id);
 	} catch (Exception $e) {
 		echo json_encode(array(
 				"status"=>"500",
@@ -94,7 +91,7 @@ $app->delete('/api/users/:id', function ($id) use($app,$db) {
 	}
 	
 	try {
-		$a = $db->deleteDoc($doc);
+		$a = $app->db->deleteDoc($doc);
 		echo json_encode($a);
 	} catch (Exception $e) {
 		echo json_encode(array(
@@ -104,13 +101,11 @@ $app->delete('/api/users/:id', function ($id) use($app,$db) {
 			)
 		);
 	}
-
-
 });
 // POST route (update)
-$app->post("/api/users/:id",function($id) use($app,$db){
+$app->post("/api/users/:id",function($id) use($app){
 	try {
-	    $user = $db->getDoc($id);
+	    $user = $app->db->getDoc($id);
 	} catch (Exception $e) {
 	    echo json_encode(array(
 				"status"=>"500",
@@ -121,7 +116,7 @@ $app->post("/api/users/:id",function($id) use($app,$db){
 	}
 	try {
 		$user_data = json_decode($app->request()->getBody());
-		$db->updateDoc();
+		$app->db->updateDoc();
 	
 	} catch (Exception $e) {
 	    echo json_encode(array(
@@ -131,14 +126,12 @@ $app->post("/api/users/:id",function($id) use($app,$db){
 			)
 		);
 	}
-
-
 });
 
 // POST route (creation)
-$app->post('/api/users', function () use($app,$db) {
+$app->post('/api/users', function () use($app) {
     $user_data = json_decode($app->request()->getBody());
-    $user = new couchDocument($db);
+    $user = new couchDocument($app->db);
     $user->set($user_data);
 
     echo json_encode($user->getFields());
@@ -146,22 +139,13 @@ $app->post('/api/users', function () use($app,$db) {
 
 
 
-$app->get('/api/users/:id', function ($id) use($app, $db) {
+$app->get('/api/users/:id', function ($id) use($app) {
+	$doc = $app->db->revs()->getDoc($id);
 	
-	$req = $app->request();
-	$rev = $req->get('rev');
-	
-	if(isset($rev) && $rev != "undefined" ){
-		try {
-			$doc = $db->revs()->rev($rev)->getDoc($id);
-		} catch ( Exception $e ) {
-			if ( $e->getCode() == 404 ) {
-			   $doc = array('status'=>404,'message'=>"Document '{$id}' or revision {$rev} does not exist !");
-			}
-		}
-	} else {
-		$doc = $db->revs()->getDoc($id);
+	if($doc->type == "user"){
 		$doc->fullname = "{$doc->firstname} {$doc->lastname}";
+	} else {
+		$app->error(new BadTypeException("User",0));
 	}
 	
 	echo json_encode($doc);
@@ -172,72 +156,107 @@ $app->get('/api/users/:id', function ($id) use($app, $db) {
 
 /** EVENTS **/
 
-$app->get('/api/events', function () use($app, $db) {
-	$view = $db->revs()->getView('events','list');
+$app->get('/api/events', function () use($app) {
+	$eventsView = $app->db->revs()->getView('events','list');
+	$events = getItems($eventsView);
 	
-	$data = array();
-	foreach($view->rows as $u){
-		$data[] = $u->value;
+	foreach($events as &$event){
+		$event->expenses = fetchExpenses($app, $event->_id);
 	}
-	
-	echo json_encode($data);
+
+	echo json_encode($events);
 });
 
-$app->get('/api/events/:id', function ($id) use($app, $db) {
-	$req = $app->request();
-	$rev = $req->get('rev');
+$app->get('/api/events/:id', function ($id) use($app) {
 	
-	if(isset($rev) && $rev != "undefined" ){
-		try {
-			$doc = $db->revs()->rev($rev)->getDoc($id);
-		} catch ( Exception $e ) {
-			if ( $e->getCode() == 404 ) {
-			   $doc = array('status'=>404,'message'=>"Document '{$id}' or revision {$rev} does not exist !");
-			}
-		}
+	$doc = $app->db->revs()->getDoc($id);
+	if($doc->type == "event"){
+		$doc->expenses = fetchExpenses($app, $id);
+		echo json_encode($doc);
 	} else {
-		$doc = $db->revs()->getDoc($id);
+		$app->error(new BadTypeException("Event",0));
 	}
 	
-	echo json_encode($doc);
 });
 
-$app->post('/api/events', function () use($app,$db) {
+$app->post('/api/events', function () use($app) {
     $_event = json_decode($app->request()->getBody());
-    $event = new couchDocument($db);
+    $event = new couchDocument($app->db);
     $event->set($_event);
 
     echo json_encode($event->getFields());
 });
 
+/** EXPENSES **/
 
-
-
-
-
-
-
-$app->get('/api/tags', function () use($app, $db) {
-	$view = $db->getView('tags','list');
+$app->get('/api/expenses', function () use($app) {
+	$view = $app->db->revs()->getView('expenses','list');
 	
-	$data = array();
-	foreach($view->rows as $u){
-		$data[] = $u->value;
-	}
-	
+	$data = getItems($view);
 	echo json_encode($data);
 });
 
+$app->get('/api/expenses/:id', function ($id) use($app) {
+	
+	$doc = $app->db->revs()->getDoc($id);
+	
+	if($doc->type == "expense"){
+		echo json_encode($doc);
+	} else {
+		$app->error(new BadTypeException("Expense",0));
+	}
+});
 
+$app->post('/api/expenses', function () use($app) {
+    $_obj = json_decode($app->request()->getBody());
+    $obj = new couchDocument($app->db);
+    $obj->set($_obj);
 
+    echo json_encode($obj->getFields());
+});
 
-// POST route
-$app->post('/api/tasks', function () use($app,$db) {
-    $data = json_decode($app->request()->getBody());
-    $document = new couchDocument($db);
-    $document->set($data);
+$app->delete('/api/expenses/:id', function ($id) use($app) {
+	try {
+		$doc = $app->db->getDoc($id);
+	} catch (Exception $e) {
+		echo json_encode(array(
+				"status"=>"500",
+				"message"=>$e->getMessage(),
+				"errorCode"=>$e->getCode()
+			)
+		);
+	}
+	
+	try {
+		$a = $app->db->deleteDoc($doc);
+		echo json_encode($a);
+	} catch (Exception $e) {
+		echo json_encode(array(
+				"status"=>"500",
+				"message"=>$e->getMessage(),
+				"errorCode"=>$e->getCode()
+			)
+		);
+	}
+});
 
-    echo json_encode($document->getFields());
+/** Returns the revision of a document **/
+$app->get('/api/rev/:id',function($id) use($app) {
+	$req = $app->request();
+	$rev = $req->get('rev');
+
+	if(isset($rev) && $rev != "undefined" ){
+		try {
+			$doc = $app->db->revs()->rev($rev)->getDoc($id);
+		} catch ( Exception $e ) {
+			if ( $e->getCode() == 404 ) {
+			   $doc = array('status'=>404,'message'=>"Document '{$id}' or revision {$rev} does not exist !");
+			}
+		}
+	}
+
+	echo json_encode($doc);
+
 });
 
 // PUT route
@@ -250,11 +269,30 @@ $app->delete('/users/:id', function ($id) {
     echo 'This is a DELETE route';
 });
 
-/**
- * Step 4: Run the Slim application
- *
- * This method should be called last. This executes the Slim application
- * and returns the HTTP response to the HTTP db.
- */
+
 $app->run();
 
+/** HELPERS **/
+
+function getItems($items){
+	$data = array();
+	foreach ($items->rows as $row) {
+		$data[] = $row->value;
+	};
+	return $data;
+}
+/**
+*	retourne les dépenses associées à l'évenement dont l'id est passé en paramètre
+*	@return array 
+**/
+function fetchExpenses($app, $EventId = null){
+	$result = array();
+	$expensesView = $app->db->getView('expenses','list');
+	foreach(getItems($expensesView) as $expense){
+		if(isset($expense->event_id) && $expense->event_id  == $EventId){
+			$result[] = $expense->_id;
+		}
+	};
+
+	return $result;
+}

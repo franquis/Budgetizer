@@ -1,5 +1,8 @@
 <ul class="nav nav-list" id="viewsChoser">
 	<li class="nav-header">Quick Actions</li>
+	<li ng-class="{true:'active',false:''}[view=='add']">
+		<a href="#/events/detail/{{event._id}}?view=add" ng-click="view='add'"><i class="icon-plus-sign"></i> Add Expense</a>
+	</li>
 	<li>
 		<a href="#/events/add">
 			<i class="icon-plus-sign"></i> Add Event
