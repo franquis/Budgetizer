@@ -4,14 +4,14 @@
 		<a href="#/events/detail/{{event._id}}?view=add" ng-click="view='add'"><i class="icon-plus-sign"></i> Add Expense</a>
 	</li>
 	<li>
-		<a href="#/events/add">
+		<a href="#/events/add" ng-class="isLinkActive($event)">
 			<i class="icon-plus-sign"></i> Add Event
 		</a>
 	</li>
 </ul>
 <ul class="nav nav-list">
 	<li class="nav-header">Events list</li>
-	<li ng-repeat="event in events"><a class="" href="#/events/detail/{{event._id}}"><i class="icon-time"></i> {{event.name}}</a></li>
+	<li ng-repeat="event in events" ng-class="isLinkActive($event)"><a target="_self" ng-href="#/events/detail/{{event._id}}"><i class="icon-time"></i> {{event.name}}</a></li>
 	<li></li>
 </ul>
 

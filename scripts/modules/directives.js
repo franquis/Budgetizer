@@ -1,5 +1,18 @@
 var Directives = angular.module("Directives",[]);
 
+Directives.directive('elink',function(){
+  return {
+      restrict: 'E',
+      replace: true,
+      template: '<li ng:click="show(item)" ng-class="clickable"></li>',
+      scope : {item : '=', show : '&ngClick'},
+      link:function ($scope, $element, $attrs) {
+        $element.html($scope.item)
+      }
+    };
+
+});
+
 Directives.directive('pikaday',function(){
 	var linker = function(scope,element,attr,ctrl) {
      	$(element).pikaday({

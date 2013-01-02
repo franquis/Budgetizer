@@ -5,6 +5,7 @@ eventsModule.config(['$routeProvider', function($routeProvider) {
 		when('/events', {templateUrl : 'templates/events/index.html',controller:"EventsCtrl"}).
 		when('/events/add', {templateUrl : 'templates/events/add.html',controller:"EventCtrl"}).
 		when('/events/detail/:id', {templateUrl : 'templates/events/detail.html',controller:"EventDetailCtrl"}).
+		when('/events/detail/:id/add', {templateUrl : 'templates/events/detail.html',controller:"EventDetailCtrl"}).
 
 		otherwise({redirectTo: '/404'});
 }]);
@@ -35,20 +36,24 @@ eventsModule.controller("EventCtrl",function($scope, $location, $log, $routePara
 	
 
 	$scope.EventModel = {
-		"type":"event"
+		"type":"event",
+		"created":{
+			"date":new Date(),
+			"uid":$scope.currentUser._id
+		}
 	};
 	
 	$scope.newEvent = angular.copy($scope.EventModel);
 
 	
 	//Return the current 'Event' Object...
-	$scope.getEvent = function(){
+	var getEvent = function(){
 		
 		if(!angular.isObject($scope.event)){
 			if($routeParams.id){
 				var _id = $routeParams.id;
 				$scope.$parent.getObject(_id,"events",function(event){
-					$log.info("Event #"+_id+" found:",event);
+					$log.info("EventCtrl > getEvent() > Event #"+_id+" found:",event);
 					$scope.event = event;
 				},function(){
 					$scope.getEvent();
@@ -63,18 +68,16 @@ eventsModule.controller("EventCtrl",function($scope, $location, $log, $routePara
 	};
 
 	
-	$scope.getEvent();
+	getEvent();
 	
 
 	$scope.addEvent = function(){
-		DataFactory.data.events.push($scope.newEvent);
-		/*
 		Events.save($scope.newEvent,function(event){
 			DataFactory.data.events.push(event);
 			$scope.newEvent = angular.copy($scope.EventModel);
 		});
-		*/
-		//$location.path("/events");
+		
+		$location.path("/events");
 
 	}
 
@@ -86,6 +89,13 @@ eventsModule.controller("EventDetailCtrl",function($scope, $location, $timeout, 
 	$scope.defaultView = "list";
 	$scope.view = (url_params.view) ? url_params.view : $scope.defaultView;	
 	
+	$scope.ready = false;
+
+	$scope.$on('ready',function(){
+		$log.info("App ready");
+		$scope.ready = true;
+	})
+
 	$scope.filters = {
 		"query":"",
 		'orderBy':"created.date",
@@ -93,95 +103,130 @@ eventsModule.controller("EventDetailCtrl",function($scope, $location, $timeout, 
 
 	};
 
-	$scope.totalDepense = 0;
-	
+	$scope.repartition = {
+		"total":0,
+		"users":[]
+	};
+	var getRepartitionI = 0;
 	$scope.expenses = [];
 
-	$scope.buildTotal = function(){
-		$scope.totalDepense = 0;
+	var getTotal = function(){
+		
+		$scope.repartition.total = 0;
 		angular.forEach($scope.expenses,function(expense){
-			$scope.totalDepense += expense.amount;
+			$scope.repartition.total += parseFloat(expense.amount);
 		});
 	};
 	
-	$scope.getEvent = function(){
-		
+	var getEvent = function(){
+
 		if(!angular.isObject($scope.event)){
 			if($routeParams.id){
 				var _id = $routeParams.id;
-				DataFactory.get(_id,"events",function(event){
-					$log.info("Event #"+_id+" found:",event);
+				DataFactory.getEvent(_id,function(event){
+					$log.info("EventDetailCtrl > getEvent() > Event #"+_id+" found:",event);
 					$scope.event = event;
 					angular.forEach(event.expenses,function(expense){
 						Expense = DataFactory.getExpense(expense);
 						$scope.expenses.push(Expense);
-
 					});
-					$scope.buildTotal();
+					$scope.$emit("ready");
+					$scope.$root.$emit("EventUpdate",{"event":event,"who":"EventDetailCtrl > getEvent()"});					
 				},function(){
 					$log.warn("Event #"+_id+" not found, looping...");
 					$timeout(function(){
-						$scope.getEvent();},1000);
+						getEvent();},1000);
 				});
 
 			}
 		}
 	};
 
-	$scope.getEvent();
+	getEvent();
 
-	$scope.$watch(function(){return $scope.expenses;},function(a,b){
-		$scope.buildTotal();
+	$scope.$root.$on("EventUpdate",function(e,data){
+		$log.info("EventUpdate detected. EventData: ",data, 'on timestamp', new Date().getTime());
+		getRepartition(data.event);
+		getTotal();
+		// Events.save({id:$scope.event._id});
 	});
 
-	$scope.$root.$on("EventUpdate",function(event,b){
-		$scope.buildTotal();
+	
+	$scope.$root.$on('ExpenseUpdate',function(e,data){
+		$log.info('ExpenseUpdate detected. EventData',data, 'on timestamp', new Date().getTime());
+		getRepartition(data.event);
 	});
 
-	$scope.isContributor = function(id,expense){
-		return (jQuery.inArray(id,expense.contributors) >= 0) ? 'true' : 'false';
+	$scope.isContributor = function(participant,expense){
+		return (jQuery.inArray(participant,expense.contributors) >= 0) ? true : false;;
 	}
 
 
-	$scope.getRep = function(participant, callback){
-		var depense = 0, rembourse = 0;
-
-		angular.forEach($scope.expenses,function(expense){
-
-			var contributors = expense.contributors.length;
+	var getRepartition = function(Event, participant){
+		if(angular.isDefined(Event)){
+			var event = Event;
+		} else {
+			$log.error("Required parameter 'event' ",e, "is not defined!")
+			return;
+		}
 			
-			if($scope.isContributor(participant,expense)){
-				rembourse += expense.amount / contributors;
-			}
-			
-			if( expense.creditor == participant) {
-				depense += expense.amount;
-			}
+		if(event.expenses.length == 0){
+			$log.info("No expenses for the current event",event._id);
+		}
+		getRepartitionI++;
+		console.log("getRepartitionI(",$scope.event._id,")",getRepartitionI);
+		var ParticipantRepartition = function(participant){
+			//Clearing Repartition data for current participant
+			var currentUserData = $scope.repartition.users[participant] = {"depense":0,"rembourse":0,"delta":0};
 
-		});
-		var output = {
-			depense: depense,
-			rembourse: rembourse,
-			delta: depense - rembourse
+			var depense = 0, rembourse = 0, delta = 0;
+
+			//for each expenses in the current event
+			angular.forEach(event.expenses,function(expense_id){
+				//Get the 'expense' object from the expense ID stored into the 'event' object.
+
+				var expense = DataFactory.getExpense(expense_id);
+			
+				var NumberOfContributors = expense.contributors.length;
+				
+				if($scope.isContributor(participant,expense)){
+					rembourse += parseFloat(expense.amount) / NumberOfContributors;
+				}
+				
+				if( expense.creditor == participant) {
+					depense += parseFloat(expense.amount);
+				}
+			});
+
+			delta = parseFloat(depense - rembourse);
+
+			$scope.repartition.users[participant] = {
+				'depense': depense,
+				'rembourse': rembourse,
+				'delta': delta
+			};
 		};
 
-		if(callback){
-			callback(output);
+
+		if(participant) {
+			$log.info("getRepartition() called on event_id #"+event._id, 'for user', participant, 'on timestamp:', new Date().getTime());
+			ParticipantRepartition(participant);
 		} else {
-			return output;
+			$log.info("getRepartition() called on event_id #"+event._id, 'on timestamp:', new Date().getTime());
+
+			angular.forEach(event.participants,function(participant){
+				ParticipantRepartition(participant);
+			});
 		}
 	};
 	
 	
 
-	$scope.$root.$on('ExpenseUpdate',function(event,data){
-		//console.log('ExpenseUpdate',data);
 	
-	});
 
 
 
-	$scope.genereRemboursements = function(){
+	var genereRemboursements = function(){
 		
 		$scope.remboursements = [];
 		var a = [];
@@ -240,5 +285,39 @@ eventsModule.controller("EventDetailCtrl",function($scope, $location, $timeout, 
 			
 		return false;
 	}
+
+});
+
+
+eventsModule.controller("ExpenseInEventCtrl",function($scope,$log){
+
+	
+	//Update the current expense with the selected participant.
+	$scope.update = function($event,participant){
+		
+		var checkbox = $event.target;
+		var action = (checkbox.checked ? 'add' : 'remove');
+		
+		var index = $scope.expense.contributors.indexOf(participant);
+		if (action == 'add' & index == -1) {
+			$scope.expense.contributors.push(participant);
+		};
+			
+		if (action == 'remove' && index != -1) {
+			$scope.expense.contributors.splice(index, 1);
+		}
+		$log.info("Expense update for event",$scope.event);
+
+		$scope.$root.$emit("ExpenseUpdate",{event:$scope.event,expense:$scope.expense,participant:participant});
+	};
+
+	//Returns the 'checked' attribute for a 'checkbox' DOM element.
+	$scope.isContributor = function(id){
+		if(angular.isDefined($scope.expense))
+			return (jQuery.inArray(id,$scope.expense.contributors) >= 0) ? 'checked' : '';
+	}
+
+
+
 
 });

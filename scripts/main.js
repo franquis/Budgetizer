@@ -21,6 +21,7 @@ Budgetizer.factory('DataFactory',function($rootScope, $timeout,$q, $log, Users, 
 	var models = {};
 	var indexes = {"users":[],"events":[],"expenses":[],"categories":[]};
 
+
 	var buildIndex = function(object, callback){
 		angular.forEach(models[object],function(o,i){
 			indexes[object][o._id] = i;
@@ -70,25 +71,29 @@ Budgetizer.factory('DataFactory',function($rootScope, $timeout,$q, $log, Users, 
 
 	/* Data fetching ... */
 	$rootScope.$watch(function(){return models;},function(a,b){
-		$log.info("DataFactory watcher:",a,b);
+		//$log.info("DataFactory watcher:",a,b);
 	});
 
 	var xhr = function(poll){
+		loading = 0;
 		models.events =  Events.query(function(events){
 				buildIndex("events");
 			},function(error){
+				alert("A connexion error occured...");
 				$log.error(error);
 		});
 
 		models.users = Users.query(function(users){
 				buildIndex("users");
 			},function(error){
+				alert("A connexion error occured...");
 				$log.error(error);
 		});
 
 		models.expenses =  Expenses.query(function(expenses){
 				buildIndex("expenses");
 			},function(error){
+				alert("A connexion error occured...");
 				$log.error(error);
 		});
 
@@ -112,7 +117,7 @@ Budgetizer.factory('DataFactory',function($rootScope, $timeout,$q, $log, Users, 
 		}
 	};
 
-	
+
 	
 	//Launching xhr requests...
 	xhr();
@@ -128,10 +133,11 @@ Budgetizer.factory('DataFactory',function($rootScope, $timeout,$q, $log, Users, 
     };
 });
 
-Budgetizer.controller('MainCtrl',function($scope, $location, $routeParams, $log, Users, Events, Expenses, DataFactory){
+Budgetizer.controller('MainCtrl',function($scope, $timeout, $location, $routeParams, $log, Users, Events, Expenses, DataFactory){
 	
 	$scope.$log = $log;
-
+	
+	
 	$scope.error = {
 		"status":200
 	};
@@ -141,6 +147,7 @@ Budgetizer.controller('MainCtrl',function($scope, $location, $routeParams, $log,
 	};
 
 	$scope.currentUser = {
+		"_id":"5dff9eebfedec51410b07d961200088f",
 		"firstname":"François",
 		"lastname":"Perret du Cray"
 	};
@@ -253,12 +260,17 @@ Budgetizer.controller('MainCtrl',function($scope, $location, $routeParams, $log,
 
 
 	$scope.isLinkActive = function(url){
+		
+		// var element = angular.element(e.srcElement);
+		// var url = angular.isDefined(url) ? _url : element.children('a').attr('href');
 
-		if(url.length > 1){
-			var re = new RegExp("^\/"+url);
-			return ($scope.currentUrl().match(re)) ? 'active' : '';
-		} else {
-			return ($scope.currentUrl()) === url ? 'active' : '';
+		if(angular.isDefined(url)){	
+			if(url.length > 1){
+				var re = new RegExp("^\/"+url);
+				return ($scope.currentUrl().match(re)) ? 'active' : '';
+			} else {
+				return ($scope.currentUrl()) === url ? 'active' : '';
+			}
 		}
 	};
 
